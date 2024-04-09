@@ -104,7 +104,7 @@ class APIdanhsachtaikhoancontroller extends Controller
     public function register(Request $request) {
         $data = $request->all();
         $data['is_block'] = 0;
-        $data['tinh_trang'] = 0;
+        $data['tinh_trang'] = 1;
         $data['password'] = bcrypt($request->password);
         $data['thay_the_id'] = Str::uuid();
         danhsachtaikhoan::create($data);
