@@ -118,14 +118,13 @@ class APIdanhsachtaikhoancontroller extends Controller
             'status'    => 1,
             'message'   => 'Tạo Tài Khoản Thành Công',
         ]);
-
     }
 
     public function login(Request $request) {
         $check =  Auth::guard('client')->attempt(['email' => $request->email, 'password' => $request->password]);
 
         if ($check == true) {
-            // $user =  Auth::guard('client')->user();
+            $user =  Auth::guard('client')->user();
             // if (!$user->tinh_trang) {
             //     Auth::guard('client')->logout();
             //     return response()->json([

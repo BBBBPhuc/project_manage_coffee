@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendMailJob;
+use App\Models\danhsachtaikhoan;
 use App\Models\DonDatMon;
 use App\Models\HangHoa;
 use App\Models\HoaDonBanHang;
@@ -46,7 +47,16 @@ class APIHoaDonBanHangController extends Controller
                 $hoaDon->is_thanh_toan = 0;
             }
             $hoaDon->save();
-
+            $number = $request->all()[2];
+            if ($number != "") {
+                $client = danhsachtaikhoan::where('so_dien_thoai', $number)
+                    ->first();
+                if ($client) {
+                    $tongTien = $tongTien / 1000;
+                    $client->score_order = $tongTien;
+                    $client->save();
+                }
+            }
             foreach ($listGrub as $key => $value) {
                 $donDat = DonDatMon::find($value['id_don_dat']);
                 if ($donDat) {
@@ -187,13 +197,31 @@ class APIHoaDonBanHangController extends Controller
 
         if ($user) {
             $hoaDon = HoaDonBanHang::where('nguoi_tao_hoa_don', $user->id)
-                ->join('don_dat_mons', 'hoa_don_ban_hangs.ma_hoa_don', '=', 'don_dat_mons.ma_hoa_don')
-                ->join('hang_hoas', 'don_dat_mons.id_hang_hoa', '=', 'hang_hoas.id')
-                ->select('hoa_don_ban_hangs.*', 'hang_hoas.ten_hang_hoa')
-                ->groupBy('hoa_don_ban_hangs.*')
+                ->join('don_dat_mons', 'hoa_don_ban_hangs.ma_hoa_don', 'don_dat_mons.ma_hoa_don')
+                ->join('hang_hoas', 'don_dat_mons.id_hang_hoa', 'hang_hoas.id')
+                ->select(
+                    'hang_hoas.ten_hang_hoa',
+                    'hang_hoas.gia_hang_hoa',
+                    'hang_hoas.hinh_anh',
+                    'don_dat_mons.so_luong',
+                    'hoa_don_ban_hangs.created_at',
+                    'hoa_don_ban_hangs.is_thanh_toan',
+                    'hoa_don_ban_hangs.ma_hoa_don',
+                    'hoa_don_ban_hangs.tong_tien'
+                )
+                ->groupBy(
+                    'hang_hoas.ten_hang_hoa',
+                    'hang_hoas.gia_hang_hoa',
+                    'hang_hoas.hinh_anh',
+                    'don_dat_mons.so_luong',
+                    'hoa_don_ban_hangs.created_at',
+                    'hoa_don_ban_hangs.is_thanh_toan',
+                    'hoa_don_ban_hangs.ma_hoa_don',
+                    'hoa_don_ban_hangs.tong_tien'
+                )
                 ->get();
 
-            dd($hoaDon->toArray());
+            // dd($hoaDon->toArray());
 
 
             return response()->json([

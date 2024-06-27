@@ -11,6 +11,7 @@ class LoaiHangHoa extends Model
     protected $table = 'loai_hang_hoas';
     protected $fillable = [
         'ten_loai_hang',
+        'hinh_anh',
         'tinh_trang',
     ];
 }

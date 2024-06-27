@@ -13,14 +13,13 @@ class APITrangChuController extends Controller
     public function homeData() {
         $types = LoaiHangHoa::where('loai_hang_hoas.tinh_trang', 1)
                              ->join('hang_hoas', 'hang_hoas.id_loai_hang_hoa', 'loai_hang_hoas.id')
-                             ->select('loai_hang_hoas.ten_loai_hang', 'loai_hang_hoas.id', DB::raw('count(hang_hoas.id) as so_luong'))
-                             ->groupBy('loai_hang_hoas.ten_loai_hang', 'loai_hang_hoas.id')
+                             ->select('loai_hang_hoas.ten_loai_hang', 'loai_hang_hoas.id', DB::raw('count(hang_hoas.id) as so_luong'),
+                             'loai_hang_hoas.hinh_anh')
+                             ->groupBy('loai_hang_hoas.ten_loai_hang', 'loai_hang_hoas.id', 'loai_hang_hoas.hinh_anh')
                              ->get();
-
         $items = HangHoa::where('tinh_trang', 1)
                                 ->get();
-
-       return response()->json([
+        return response()->json([
             'items' => $items,
             'types' => $types
        ]);

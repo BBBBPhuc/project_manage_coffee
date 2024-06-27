@@ -47,15 +47,17 @@
                                                         Thị</button>
                                                     <button v-on:click="changStatus(v)" v-else class="btn btn-warning">Tạm Tắt</button>
                                                 </td>
-                                                <td class="text-center align-middle text-nowrap">@{{ v.ten_loai_hang }}</td>
+                                                <template v-for="(v1, k1) in loai_hang_hoa">
+                                                    <td v-if="v1.id == v.id_loai_hang_hoa" class="text-center align-middle">@{{ v.ten_loai_hang }}</td>
+                                                </template>
                                                 <td class="text-center align-middle">
                                                     <i v-on:click="chi_tiet = Object.assign({}, v)" data-bs-toggle="modal"
                                                         data-bs-target="#MoTaModal" class="fa-2x fa-solid fa-circle-info"
                                                         style="color: #0dd91a;"></i>
                                                 </td>
                                                 <td class="text-center align-middle">
-                                                    <img v-bind:src="v.hinh_anh" class="img-thumbnail"
-                                                        style="height: 100px">
+                                                    <img v-bind:src="v.hinh_anh"  class="img-thumbnail"
+                                                        style="height: 100px; width: 150px; object-fit: cover">
                                                 </td>
                                                 <td class="text-center align-middle">@{{ vnd(v.gia_hang_hoa) }}</td>
                                                 <td class="text-center align-middle">@{{ v.ten_don_vi }}</td>

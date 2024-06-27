@@ -12,18 +12,17 @@ use Illuminate\Support\Facades\DB;
 
 class APILenDonController extends Controller
 {
-    public function data() {
+    public function data()
+    {
         $user = Auth::guard('admin')->user();
-
         $dataHangHoa = HangHoa::where('tinh_trang', 1)
-                               ->get();
+            ->get();
         $donDat = DonDatMon::where('id_nhan_vien', $user->id)
-                            ->where('ma_hoa_don', null)
-                            ->get();
-
+            ->where('ma_hoa_don', null)
+            ->get();
         $listSDT = danhsachtaikhoan::where('tinh_trang', 1)
-                                   ->select('so_dien_thoai')
-                                   ->get();
+            ->select('so_dien_thoai')
+            ->get();
         $arr = [];
         foreach ($donDat as $key => $value) {
             $dataGrub = HangHoa::find($value->id_hang_hoa);
@@ -38,11 +37,10 @@ class APILenDonController extends Controller
             'dataGrub' => $arr,
             'listSDT'  => $listSDT
         ]);
-
-
     }
 
-    public function createGrubOff(Request $request) {
+    public function createGrubOff(Request $request)
+    {
         $user = Auth::guard('admin')->user();
         $donDat = DonDatMon::create([
             'id_hang_hoa' => $request->id,
@@ -50,21 +48,21 @@ class APILenDonController extends Controller
         ]);
         $donDat->id_nhan_vien = $user->id;
         $donDat->save();
-
         return response()->json([
             'status'    => 1,
             'message'   => 'Thêm sản phẩm thành công',
         ]);
     }
 
-    public function destroyAll(Request $request) {
+    public function destroyAll(Request $request)
+    {
         $user = Auth::guard('admin')->user();
         $data = $request->all();
         if ($data) {
             foreach ($data as $key => $value) {
                 DonDatMon::where('id_nhan_vien', $user->id)
-                         ->where('id', $value['id_don_dat'])
-                         ->delete();
+                    ->where('id', $value['id_don_dat'])
+                    ->delete();
             }
             return response()->json([
                 'status'    => 1,
@@ -78,15 +76,15 @@ class APILenDonController extends Controller
         }
     }
 
-
-    public function destroy(Request $request) {
+    public function destroy(Request $request)
+    {
         $user = Auth::guard('admin')->user();
         DonDatMon::where('id_nhan_vien', $user->id)
-                            ->where('id', $request->id)
-                            ->delete();
-            return response()->json([
-                'status'    => 1,
-                'message'   => 'Xóa món hàng thành công',
-            ]);
+            ->where('id', $request->id)
+            ->delete();
+        return response()->json([
+            'status'    => 1,
+            'message'   => 'Xóa món hàng thành công',
+        ]);
     }
 }

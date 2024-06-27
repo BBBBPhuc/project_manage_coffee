@@ -12,7 +12,12 @@
                             <div class="mb-2">
                                 <label>Loại Hàng Hóa</label>
                                 <input v-model="them_moi.ten_loai_hang" type="text" class="form-control"
-                                    placeholder="Nhap vao Loai Hang Hoa ...">
+                                    placeholder="Nhập Vào Loai Hang Hoa ...">
+                            </div>
+                            <div class="mb-2">
+                                <label>Hình Ảnh</label>
+                                <input v-model="them_moi.hinh_anh" type="text" class="form-control"
+                                    placeholder="Nhập Vào Hình Ảnh ...">
                             </div>
                             <div class="mb-2">
                                 <label>Tình Trạng</label>
@@ -40,6 +45,7 @@
                                         <tr>
                                             <th class="text-center align-middle">ID</th>
                                             <th class="text-center align-middle">Loại Hàng Hóa</th>
+                                            <th class="text-center align-middle">Hình Ảnh</th>
                                             <th class="text-center align-middle">Tình Trạng</th>
                                             <th class="text-center align-middle">Action</th>
                                         </tr>
@@ -49,6 +55,10 @@
                                             <tr>
                                                 <th class="text-center align-middle">@{{ k + 1 }}</th>
                                                 <td class="text-center align-middle">@{{ v.ten_loai_hang }}</td>
+                                                <td class="text-center align-middle">
+                                                    <img v-bind:src="v.hinh_anh" class="img-thumbnail"
+                                                    style="height: 100px; width: 150px">
+                                                </td>
                                                 <td class="text-center align-middle">
                                                     <button v-on:click="changStatus(v)" v-if="v.tinh_trang" class="btn btn-success">Hiển Thị</button>
                                                     <button v-on:click="changStatus(v)" v-else class="btn btn-warning">Tạm Tắt</button>
@@ -97,6 +107,11 @@
                                                     <label>Loại Hàng Hóa</label>
                                                     <input v-model="deleteData.ten_loai_hang" type="text"
                                                         class="form-control" placeholder="Nhap vao Loai Hang Hoa ...">
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label>Hình Ảnh</label>
+                                                    <input v-model="deleteData.hinh_anh" type="text" class="form-control"
+                                                        placeholder="Nhập Vào Hình Ảnh ...">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -163,6 +178,7 @@
                         });
                 },
                 repairData() {
+                    console.log(this.deleteData);
                     axios
                         .post('{{Route('updateLoaiHangHoa')}}', this.deleteData)
                         .then((res) => {

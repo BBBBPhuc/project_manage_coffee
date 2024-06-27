@@ -10,14 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class APIUserController extends Controller
 {
-    public function data() {
+    public function data()
+    {
         $user = Auth::guard('client')->user();
         return response()->json([
             'dataUser' => $user,
         ]);
     }
 
-    public function checkPass(Request $request) {
+    public function checkPass(Request $request)
+    {
         $user = Auth::guard('client')->user();
         $check = Auth::guard('client')->attempt(['email' => $user->email, 'password' => $request->pass]);
         if ($check) {
@@ -39,7 +41,6 @@ class APIUserController extends Controller
                         'message'   => 'Lưu Thay Đổi Thành Công',
                     ]);
                 }
-
             }
         } else {
             return response()->json([
@@ -48,6 +49,4 @@ class APIUserController extends Controller
             ]);
         }
     }
-
-
 }

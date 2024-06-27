@@ -1,8 +1,6 @@
 <header class="main-header header-style-two">
     <div id="app_header">
-        <!-- Header Lower -->
         <div class="header-lower">
-
             <div class="auto-container">
                 <div class="inner-container d-flex justify-content-between align-items-center">
                     <!-- Logo Box -->
@@ -14,23 +12,13 @@
                                 <span class="bottom-bun"></span>
                             </span>
                         </div>
-                        <!-- Logo -->
                         <div class="logo"><a href="/"><img src="/assets_client/images/logo.png" alt=""
                                     title=""></a></div>
                     </div>
                     <div class="middle-box">
                         <div class="upper-box d-flex justify-content-between align-items-center flex-wrap">
-
-                            <!-- Info List -->
-
-
-                            <!-- Upper Right -->
-
                         </div>
-
                         <div class="nav-outer d-flex justify-content-between align-items-center flex-wrap">
-
-                            <!-- Main Menu -->
                             <nav class="main-menu show navbar-expand-md">
                                 <div class="navbar-header">
                                     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -41,7 +29,6 @@
                                         <span class="icon-bar"></span>
                                     </button>
                                 </div>
-
                                 <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                                     <ul class="navigation clearfix">
                                         <li class="dropdown"><a href="/assets_client/#">Home</a>
@@ -65,45 +52,28 @@
                                         <li style="margin-left: 10px"><a href="/order">ORDER</a></li>
                                     </ul>
                                 </div>
-
                             </nav>
-                            <!-- Main Menu End-->
-
-                            <!-- Options Box -->
                             <div class="options-box d-flex align-items-center">
-
-                                <!-- Search Box -->
                                 <div class="search-box-two">
-                                    <form method="post" action="contact.html">
-                                        <div class="form-group">
-                                            <input type="search" name="search-field" value=""
+                                    <div autocomplete="off" class="form-group">
+                                        <div class="autocomplete">
+                                            <input id="myInput" type="text" name="myCountry" value=""
                                                 placeholder="Search" required>
-                                            <button type="submit"><span class="icon flaticon-search"></span></button>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
-                                <!-- User Box -->
-                                {{-- <a class="user-box flaticon-user-3" href="/tai-khoan-ca-nhan"></a> --}}
-                                <a href="/tai-khoan-ca-nhan"><i style="color: black" class="fa-solid fa-user-gear fa-xl"></i></a>
-                                <!-- Cart Box -->
+                                <a href="/tai-khoan-ca-nhan"><i style="color: black"
+                                        class="fa-solid fa-user-gear fa-xl"></i></a>
                                 <div class="cart-box-two">
                                     <a href="/order"><i class="fa-solid fa-warehouse fa-sm"></i></a>
                                     <span class="total-like">0</span>
                                 </div>
-
-                                <!-- Mobile Navigation Toggler -->
                                 <div class="mobile-nav-toggler"><span class="icon flaticon-menu"></span></div>
-
                             </div>
-
                         </div>
-
                     </div>
-
-                    <!-- Button Box -->
-                        <div class="button-box text-center mt-2">
-                            @if(Auth::guard('client')->check())
+                    <div class="button-box text-center mt-2">
+                        @if (Auth::guard('client')->check())
                             <a href="/logout" class="theme-btn btn-style-one">
                                 LOG OUT <span class="icon flaticon-right-arrow"></span>
                             </a>
@@ -112,50 +82,35 @@
                                 Login / Sign Up <span class="icon flaticon-right-arrow"></span>
                             </a>
                         @endif
-                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
-        <!-- End Header Lower -->
         <hr>
-        <!-- Sticky Header  -->
         <div class="sticky-header">
             <div class="auto-container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <!-- Logo -->
                     <div class="logo">
                         <a href="/assets_client/index.html" title=""><img
                                 src="/assets_client/assets_client/images/logo-small.png" alt=""
                                 title=""></a>
                     </div>
-
-                    <!-- Right Col -->
                     <div class="right-box">
-                        <!-- Main Menu -->
                         <nav class="main-menu">
-                            <!--Keep This Empty / Menu will come through Javascript-->
                         </nav>
-                        <!-- Main Menu End-->
-
-                        <!-- Mobile Navigation Toggler -->
                         <div class="mobile-nav-toggler"><span class="icon flaticon-menu"></span></div>
                     </div>
-
                 </div>
             </div>
         </div>
-        <!-- End Sticky Menu -->
-
-        <!-- Mobile Menu  -->
         <div class="mobile-menu">
             <div class="menu-backdrop"></div>
             <div class="close-btn"><span class="icon flaticon-multiply"></span></div>
             <nav class="menu-box">
                 <div class="nav-logo"><a href="/assets_client/index.html"><img
-                            src="/assets_client/assets_client/images/mobile-logo.png" alt=""
-                            title=""></a></div>
-                <!-- Search -->
+                            src="/assets_client/assets_client/images/mobile-logo.png" alt="" title=""></a>
+                </div>
                 <div class="search-box">
                     <form method="post" action="contact.html">
                         <div class="form-group">
@@ -166,7 +121,7 @@
                     </form>
                 </div>
                 <div class="menu-outer">
-                    <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header--></div>
+                </div>
             </nav>
         </div>
     </div>
@@ -180,7 +135,7 @@
         count: {},
         loadData: function() {
             axios
-                .post('{{Route('countDonDatMon')}}')
+                .post('{{ Route('countDonDatMon') }}')
                 .then((res) => {
                     app_header.count = res.data.data;
                     icon_count.textContent = app_header.count.so_luong;
@@ -219,9 +174,83 @@
                 }
             }
         },
+        autocomplete: function() {
+            var arr = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+            console.log(arr);
+            var inp = document.getElementById("myInput")
+            var currentFocus;
+            inp.addEventListener("input", function(e) {
+                var a, b, i, val = this.value;
+                closeAllLists();
+                if (!val) {
+                    return false;
+                }
+                currentFocus = -1;
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        b.addEventListener("click", function(e) {
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            inp.addEventListener("keydown", function(e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    currentFocus++;
+                    addActive(x);
+                } else if (e.keyCode == 38) {
+                    currentFocus--;
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+
+            function addActive(x) {
+                if (!x) return false;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+
+            function removeActive(x) {
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+
+            function closeAllLists(elmnt) {
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            document.addEventListener("click", function(e) {
+                closeAllLists(e.target);
+            });
+        },
         render: function() {
             this.handleEvent();
             this.loadData();
+            this.autocomplete();
         }
     }
     app_header.render();

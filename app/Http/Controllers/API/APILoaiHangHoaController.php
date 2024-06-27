@@ -49,7 +49,9 @@ class APILoaiHangHoaController extends Controller
             $loaiHang = LoaiHangHoa::find($request->id);
             if($loaiHang){
                 $data = $request->all();
-                $loaiHang->update($data);
+                $loaiHang->update([
+                    'hinh_anh' => $data['hinh_anh'],
+                ]);
                 DB::commit();
 
                 return response()->json([

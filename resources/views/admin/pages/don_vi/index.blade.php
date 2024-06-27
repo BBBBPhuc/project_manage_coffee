@@ -138,7 +138,7 @@
             methods: {
                 creates() {
                     axios
-                        .post('/api/admin/don-vi/create', this.them_moi)
+                        .post('http://127.0.0.1:8000/api/admin/don-vi/create', this.them_moi)
                         .then((res) => {
                             if (res.data.status) {
                                 toastr.success(res.data.message, 'Success');
@@ -155,7 +155,7 @@
                 },
                 loadData() {
                     axios
-                        .post('/api/admin/don-vi/data')
+                        .post('http://127.0.0.1:8000/api/admin/don-vi/data')
                         .then((res) => {
                             this.listData = res.data.data;
                             this.count = res.data.count;
