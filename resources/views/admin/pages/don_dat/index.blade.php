@@ -17,164 +17,186 @@
                         <div class="mb-2 d-flex">
                             <button id="choosePttt" class="btn btn-outline-primary">Chọn Phương Thức Thanh Toán
                                 Thanh Toán</button>
-                            <div autocomplete="off" style="margin-left: 10px">
-                                <div class="autocomplete" style="width:250px">
-                                    <input v-model="numberPhone" id="myInput" class="form-control" type="text" name="myCountry"
-                                        placeholder="Nhập vào số điện thoại">
-                                </div>
-                            </div>
-                        <button @click="huyDon()" style="margin-left: 60px" class="btn btn-danger">Hủy Đặt
-                            Đơn</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="text-center align-middle">#</th>
-                                    <th class="text-center align-middle">Tên Sản Phẩm</th>
-                                    <th class="text-center align-middle">Giá tiền</th>
-                                    <th class="text-center align-middle">Số Lượng</th>
-                                    <th class="text-center align-middle">Action</th>
-                                    <th class="text-center align-middle">Thành Tiền</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template v-for = "(v, k) in listGrub">
+
+                            <button @click="huyDon()" style="margin-left: 60px" class="btn btn-danger">Hủy Đặt
+                                Đơn</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <th v-on:click="deleteItem(v.id_don_dat, k)" class="text-center align-middle"><i
-                                                style="color: red" class="fa-solid fa-calendar-xmark"></i></th>
-                                        <td class="text-center align-middle">@{{ v.ten_hang_hoa }}</td>
-                                        <td class="text-center align-middle">@{{ vnd(v.gia_hang_hoa) }}</td>
-                                        <td class="text-center align-middle">@{{ v.so_luong }}</td>
-                                        <td class="text-center align-middle">
-                                            <button v-on:click="tru2(k)" class="btn btn-primary">-</button>
-                                            <button v-on:click="cong2(k)" class="btn btn-primary">+</button>
-                                        </td>
-                                        <td id="thanhtien" class="text-center align-middle">@{{ vnd(v.gia_hang_hoa * v.so_luong) }}</td>
+                                        <th class="text-center align-middle">#</th>
+                                        <th class="text-center align-middle">Tên Sản Phẩm</th>
+                                        <th class="text-center align-middle">Giá tiền</th>
+                                        <th class="text-center align-middle">Số Lượng</th>
+                                        <th class="text-center align-middle">Action</th>
+                                        <th class="text-center align-middle">Thành Tiền</th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    <template v-for = "(v, k) in listGrub">
+                                        <tr>
+                                            <th v-on:click="deleteItem(v.id_don_dat, k)" class="text-center align-middle"><i
+                                                    style="color: red" class="fa-solid fa-calendar-xmark"></i></th>
+                                            <td class="text-center align-middle">@{{ v.ten_hang_hoa }}</td>
+                                            <td class="text-center align-middle">@{{ vnd(v.gia_hang_hoa) }}</td>
+                                            <td class="text-center align-middle">@{{ v.so_luong }}</td>
+                                            <td class="text-center align-middle">
+                                                <button v-on:click="tru2(k)" class="btn btn-primary">-</button>
+                                                <button v-on:click="cong2(k)" class="btn btn-primary">+</button>
+                                            </td>
+                                            <td id="thanhtien" class="text-center align-middle">@{{ vnd(v.gia_hang_hoa * v.so_luong) }}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <h6>Tổng Tiền: <b>@{{ total }}</b></h6>
+                    </div>
+                </div>
+                <div id="pttt" class="card d-none">
+                    <div class="card-header bg-primary">
+                        Phương Thức Thanh Toán
+                    </div>
+                    <div class="card-body">
+                        <div id="tienmat" class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <i style="color: green;" class="fa-solid fa-money-check-dollar fa-6x"></i>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Thanh Toán Bằng Tiền Mặt</h6>
+                                        <p>Loại Tiền Tệ: <b>VNĐ</b></p>
+                                    </div>
+                                    <div class="col-4"></div>
+                                    <div class="col-2">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="chuyenkhoang" class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <i class="fa-solid fa-building-columns fa-6x"></i>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Thanh Toán Bằng Tài Khoản Ngân Hàng Nội Địa</h6>
+                                        <p>Chấp Nhận Mọi Ngân Hàng Nội Địa</p>
+                                    </div>
+                                    <div class="col-4"></div>
+                                    <div class="col-2">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button id="prevGrub" class="btn  btn-secondary">Xem Lại Đơn Hàng</button>
+                        <button v-on:click="pay()" style="margin-left: 500px" class="btn btn-primary">Thanh Toán <i
+                                class="fa-solid fa-spinner fa-spin-pulse d-none"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="modalQR" class="modal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="card mb-3">
+                    <div style="height: 38px" class="card-header bg-primary text-center align-middle">
+                        <h6><b>ĐƠN ĐẶT</b></h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label>Tên Hàng Hóa</label>
+                            <select v-model="chooseId" v-on:change="chooseSelect()" class="form-control">
+                                <option value="-1">--- Sản Phẩm ---</option>
+                                <template v-for="(v, k) in listHangHoa">
+                                    <option v-bind:value="v.id">@{{ v.ten_hang_hoa }}</option>
                                 </template>
-                            </tbody>
-
-                        </table>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <h6>Tổng Tiền: <b>@{{ total }}</b></h6>
-                </div>
-            </div>
-            <div id="pttt" class="card d-none">
-                <div class="card-header bg-primary">
-                    Phương Thức Thanh Toán
-                </div>
-                <div class="card-body">
-                    <div id="tienmat" class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-2">
-                                    <i style="color: green;" class="fa-solid fa-money-check-dollar fa-6x"></i>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-2">
+                                    <label>Giá Tiền</label>
+                                    <input type="text" disabled id="inputPrice" class="form-control">
                                 </div>
-                                <div class="col-4">
-                                    <h6>Thanh Toán Bằng Tiền Mặt</h6>
-                                    <p>Loại Tiền Tệ: <b>VNĐ</b></p>
+                            </div>
+                            <div class="col">
+                                <div class="mb-2">
+                                    <label style="margin-left: 80px">Số Lượng</label>
+                                    <div class="d-flex justify-content-center">
+                                        <button v-on:click="tru()" style="margin-right: 5px"
+                                            class="btn btn-outline-danger">--</button>
+                                        <input style="width: 50px" type="text" ref="soluong" value="1"
+                                            class="form-control text-center align-middle">
+                                        <button v-on:click="cong()" style="margin-left: 5px"
+                                            class="btn btn-outline-danger">+</button>
+                                    </div>
                                 </div>
-                                <div class="col-4"></div>
-                                <div class="col-2">
-
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-2">
+                                    <label>Thành Tiền</label>
+                                    <input v-model="money" type="text" disabled class="form-control">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="chuyenkhoang" class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-2">
-                                    <i class="fa-solid fa-building-columns fa-6x"></i>
-                                </div>
-                                <div class="col-4">
-                                    <h6>Thanh Toán Bằng Tài Khoản Ngân Hàng Nội Địa</h6>
-                                    <p>Chấp Nhận Mọi Ngân Hàng Nội Địa</p>
-                                </div>
-                                <div class="col-4"></div>
-                                <div class="col-2">
-
+                    <div class="card-footer text-end">
+                        <button v-on:click="createGrub()" class="btn btn-primary">Tạo 1 Sản Phẩm</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        KHÁCH HÀNG
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <label class="mt-2" for="">Số Điện Thoại: </label>
+                            <div autocomplete="off" style="margin-left: 20px">
+                                <div class="autocomplete" style="width:250px">
+                                    <input v-model="numberPhone" id="myInput" class="form-control" type="text"
+                                        name="myCountry" placeholder="Nhập vào số điện thoại">
                                 </div>
                             </div>
                         </div>
+                        <div id="infoClient" class="d-none">
+                            <label for="">Tên Khách Hàng: @{{ infoClient.ho_va_ten }}</label>
+                            <br>
+                            <div class="mb-2">
+                                <label for="">Điểm Mua Hàng: </label>
+                                <input v-model="infoClient.score_order" type="text">
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <button id="prevGrub" class="btn  btn-secondary">Xem Lại Đơn Hàng</button>
-                    <button v-on:click="pay()" style="margin-left: 500px" class="btn btn-primary">Thanh Toán <i
-                            class="fa-solid fa-spinner fa-spin-pulse d-none"></i></button>
-                </div>
-            </div>
-        </div>
-        <div id="modalQR" class="modal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <div class="card-footer">
+
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-5">
-            <div class="card">
-                <div style="height: 38px" class="card-header bg-primary text-center align-middle">
-                    <h6><b>ĐƠN ĐẶT</b></h6>
-                </div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <label>Tên Hàng Hóa</label>
-                        <select v-model="chooseId" v-on:change="chooseSelect()" class="form-control">
-                            <option value="-1">--- Sản Phẩm ---</option>
-                            <template v-for="(v, k) in listHangHoa">
-                                <option v-bind:value="v.id">@{{ v.ten_hang_hoa }}</option>
-                            </template>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-2">
-                                <label>Giá Tiền</label>
-                                <input type="text" disabled id="inputPrice" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-2">
-                                <label style="margin-left: 80px">Số Lượng</label>
-                                <div class="d-flex justify-content-center">
-                                    <button v-on:click="tru()" style="margin-right: 5px"
-                                        class="btn btn-outline-danger">--</button>
-                                    <input style="width: 50px" type="text" ref="soluong" value="1"
-                                        class="form-control text-center align-middle">
-                                    <button v-on:click="cong()" style="margin-left: 5px"
-                                        class="btn btn-outline-danger">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-2">
-                                <label>Thành Tiền</label>
-                                <input v-model="money" type="text" disabled class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-end">
-                    <button v-on:click="createGrub()" class="btn btn-primary">Tạo 1 Sản Phẩm</button>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
     </div>
 @endsection
@@ -202,8 +224,6 @@
                 $('#grub').addClass('d-none');
                 $('#pttt').removeClass('d-none');
             })
-
-
         })
     </script>
     <script>
@@ -220,6 +240,7 @@
                 listSDT: [],
                 total: 0,
                 isCheckSame: false,
+                infoClient: {},
             },
             created() {
                 this.loadData();
@@ -283,10 +304,6 @@
                                     for (var j = 0; j < this.listGrub.length; j++) {
                                         tongTien += (this.listGrub[j].so_luong * this.listGrub[j].gia_hang_hoa);
                                     };
-                                    // $('#modalQR a')[0].href =
-                                    //     `https://img.vietqr.io/image/agribank-4502281004484-compact.jpg?amount=${tongTien}&addInfo=${res}&accountName=Nguyen%20Thai%20Bao%20Phuc`;
-                                    // $('#modalQR a')[0].addEventListener('click', function(event) {
-                                    // event.preventDefault();
                                     var urlPageQr =
                                         `https://img.vietqr.io/image/agribank-4502281004484-compact.jpg?amount=${tongTien}&addInfo=${res}&accountName=Nguyen%20Thai%20Bao%20Phuc`;
                                     fetch(urlPageQr)
@@ -377,11 +394,11 @@
                             this.totalItems();
                             this.listSDT = res.data.listSDT;
                             for (let i = 0; i < this.listSDT.length; i++) {
-                                this.listSDT[i] = this.listSDT[i].so_dien_thoai
+                                this.listSDT[i] = this.listSDT[i]
                             }
                         })
                         .then((res) => {
-                            this.autocomplete();
+                            this.autocomplete(this);
                         })
                         .catch((res) => {
                             $.each(res.response.data.errors, function(k, v) {
@@ -450,9 +467,8 @@
                             });
                     }
                 },
-                autocomplete() {
+                autocomplete(app) {
                     var arr = this.listSDT;
-                    console.log(arr);
                     var inp = document.getElementById("myInput")
                     var currentFocus;
                     inp.addEventListener("input", function(e) {
@@ -467,13 +483,21 @@
                         a.setAttribute("class", "autocomplete-items");
                         this.parentNode.appendChild(a);
                         for (i = 0; i < arr.length; i++) {
-                            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                            var numTell = arr[i].so_dien_thoai;
+                            if (numTell.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
                                 b = document.createElement("DIV");
-                                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                                b.innerHTML += arr[i].substr(val.length);
-                                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                                b.innerHTML = "<strong>" + numTell.substr(0, val.length) + "</strong>";
+                                b.innerHTML += numTell.substr(val.length);
+                                b.innerHTML += "<input id='" + i + "' type='hidden' value='" + numTell +
+                                    "'>";
                                 b.addEventListener("click", function(e) {
-                                    inp.value = this.getElementsByTagName("input")[0].value;
+                                    app.numberPhone = this.getElementsByTagName("input")[0].value;
+                                    console.log(this.getElementsByTagName("input")[0].value);
+                                    app.infoClient = arr[this.getElementsByTagName("input")[0].id];
+                                    if (this.infoClient != "") {
+                                        var infoClients = document.getElementById("infoClient");
+                                        infoClients.classList.remove("d-none");
+                                    }
                                     closeAllLists();
                                 });
                                 a.appendChild(b);

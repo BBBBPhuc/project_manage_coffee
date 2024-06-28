@@ -21,7 +21,6 @@ class APILenDonController extends Controller
             ->where('ma_hoa_don', null)
             ->get();
         $listSDT = danhsachtaikhoan::where('tinh_trang', 1)
-            ->select('so_dien_thoai')
             ->get();
         $arr = [];
         foreach ($donDat as $key => $value) {
