@@ -13,17 +13,9 @@ class APIDonViController extends Controller
 {
     public function layData(Request $request)
     {
-        $data = DonVi::where('deleted', null)
-            ->orwhere('deleted', 0)
-            ->get();
-
-        $countTrash = DonVi::where('deleted', 1)
-            ->select(DB::raw('count(id) as deleted'))
-            ->first();
-
+        $data = DonVi::get();
         return response()->json([
             'data'   => $data,
-            'count' =>  $countTrash
         ]);
     }
 
@@ -112,7 +104,6 @@ class APIDonViController extends Controller
             if ($don_vi) {
                 $don_vi->tinh_trang = !$don_vi->tinh_trang;
                 $don_vi->save();
-
                 DB::commit();
 
                 return response()->json([

@@ -21,7 +21,8 @@ class APILenDonController extends Controller
             ->where('ma_hoa_don', null)
             ->get();
         $listSDT = danhsachtaikhoan::where('tinh_trang', 1)
-            ->get();
+                    ->select('id', 'so_dien_thoai', 'ho_va_ten', 'score_order')
+                    ->get();
         $arr = [];
         foreach ($donDat as $key => $value) {
             $dataGrub = HangHoa::find($value->id_hang_hoa);

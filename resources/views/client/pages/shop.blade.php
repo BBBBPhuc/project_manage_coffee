@@ -16,32 +16,35 @@
                         <div class="shops-outer">
                             <div class="row clearfix">
                                 <template v-for="(v, k) in list_items">
-
-                                    <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                    <div v-if="v.id_loai_hang_hoa == choose_type || choose_type == 0" class="shop-item col-lg-4 col-md-4 col-sm-12">
                                         <div class="inner-box">
                                             <hr>
                                             <div class="image">
-                                                <a href="shop-detail.html"><img style="height: 300px" v-bind:src="v.hinh_anh"
-                                                        alt="" /></a>
+                                                <a href="shop-detail.html"><img style="height: 300px; object-fit: cover"
+                                                        v-bind:src="v.hinh_anh" alt="" /></a>
                                             </div>
                                             <div class="lower-content">
                                                 <h6><a href="shop-detail.html">@{{ v.ten_hang_hoa }}</a></h6>
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="price">@{{vnd(v.gia_hang_hoa)}}</div>
+                                                    <div class="price">@{{ vnd(v.gia_hang_hoa) }}</div>
                                                     <!-- Quantity Box -->
 
                                                     <div class="d-flex justify-content-end">
-                                                        <button v-on:click="tru(k)" class="btn btn-outline-secondary" style="margin-right: 2px"><i
+                                                        <button v-on:click="tru(k)" class="btn btn-outline-secondary"
+                                                            style="margin-right: 2px"><i
                                                                 class="fa-solid fa-minus"></i></button>
-                                                        <input class="form-control text-center" disabled
-                                                            value="1" style="width:40px;" type="text" ref="inputRefs">
-                                                        <button v-on:click="cong(k)" class="btn btn-outline-secondary" style="margin-left: 2px"><i
+                                                        <input class="form-control text-center" disabled value="1"
+                                                            style="width:40px;" type="text" ref="inputRefs">
+                                                        <button v-on:click="cong(k)" class="btn btn-outline-secondary"
+                                                            style="margin-left: 2px"><i
                                                                 class="fa-solid fa-plus"></i></button>
                                                     </div>
                                                 </div>
                                                 <br>
                                                 <div class="d-flex justify-content-center">
-                                                    <button v-on:click="themgio(v.id, k)" class="btn btn-outline-danger"><i style="margin-right: 12px" class="fa-solid fa-cart-arrow-down fa-beat"></i> THÊM VÀO
+                                                    <button v-on:click="themgio(v.id, k)" class="btn btn-outline-danger"><i
+                                                            style="margin-right: 12px"
+                                                            class="fa-solid fa-cart-arrow-down fa-beat"></i> THÊM VÀO
                                                         GIỎ</button>
                                                 </div>
                                                 <hr>
@@ -91,9 +94,20 @@
                                     </div>
                                     <!-- Category List -->
                                     <ul class="category-list">
-                                        <template v-for="(v, k) in list_types">
-                                            <li><a href="">@{{v.ten_loai_hang}}<span>(@{{v.so_luong}})</span></a></li>
-                                        </template>
+                                        <div class="row">
+                                            <div class="col">
+                                                <button v-on:click="choose_type = 0" class="btn btn-danger">
+                                                    <label>Tất Cả</label>
+                                                </button>
+                                            </div>
+                                            <template v-for="(v, k) in list_types">
+                                                <div class="col">
+                                                    <button v-on:click="choose_type = v.id" class="btn btn-danger">
+                                                        <label>@{{ v.ten_loai_hang }}<span>(@{{ v.so_luong }})</span></label>
+                                                    </button>
+                                                </div>
+                                            </template>
+                                        </div>
                                     </ul>
                                 </div>
                             </div>
@@ -108,27 +122,31 @@
 @endsection
 @section('js')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('title')[0].innerText = 'LC - Cửa Hàng Sản Phẩm';
         })
     </script>
     <script>
         new Vue({
-            el      :   '#app_shop',
-            data    :   {
+            el: '#app_shop',
+            data: {
                 list_items: [],
                 list_types: [],
+                choose_type: 0,
             },
-            created()   {
+            created() {
                 this.loadData();
             },
-            methods :   {
+            methods: {
                 loadData() {
                     axios
-                        .post('{{Route('dataShopPage')}}')
+                        .post('{{ Route('dataShopPage') }}')
                         .then((res) => {
                             this.list_items = res.data.items;
                             this.list_types = res.data.types;
+                            var stringURL = window.location.href;
+                            var a = stringURL.slice(-1);
+                            this.choose_type = stringURL.slice(-1);
                         })
                         .catch((res) => {
                             $.each(res.response.data.errors, function(k, v) {
@@ -137,7 +155,10 @@
                         });
                 },
                 vnd(number) {
-                    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
+                    return new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(number)
                 },
                 cong(stt) {
                     var input = this.$refs.inputRefs[stt];

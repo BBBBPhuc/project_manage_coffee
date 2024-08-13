@@ -10,7 +10,7 @@
                     <div class="shop-item">
                         <div class="inner-box">
                             <div class="image">
-                                <a v-bind:href="'/detail/' + v.id"><img style="height: 270px" v-bind:src="v.hinh_anh"
+                                <a v-bind:href="'/detail/' + v.id"><img style="height: 270px; object-fit: cover" v-bind:src="v.hinh_anh"
                                         alt="" /></a>
                                 <div class="cart-box text-center">
                                     <a v-on:click="themgio(v.id, k)" class="cart">

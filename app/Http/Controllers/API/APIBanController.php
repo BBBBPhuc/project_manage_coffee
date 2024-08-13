@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ban;
+use App\Models\KhuVuc;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,12 +12,23 @@ use Illuminate\Support\Facades\Log;
 
 class APIBanController extends Controller
 {
+    public function create(Request $request) {
+        $data = $request->all();
+        Ban::create($data);
+        return response()->json([
+            'status'    => 1,
+            'message'   => 'Đã tạo thêm Bàn!',
+        ]);
+    }
+
     public function layData(Request $request)
     {
         $data = Ban::get();
-
+        $dataKhuVuc = KhuVuc::where('tinh_trang', 1)
+                            ->get();
         return response()->json([
             'data'   => $data,
+            'dataKhuVuc' => $dataKhuVuc
         ]);
     }
 

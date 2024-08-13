@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BanController;
 use App\Http\Controllers\CaLamController;
 use App\Http\Controllers\ChamCongController;
 use App\Http\Controllers\CustomController;
@@ -27,7 +28,7 @@ Route::get('/detail/{id}', [TrangChuController::class, 'detail']);
 Route::get('/login&register', [CustomController::class, 'viewLogin']);
 // Route::get('/kich-hoat-tai-khoan/{id}', [CustomController::class, 'kichhoat']);
 Route::get('/forgot-password', [CustomController::class, 'forgotPass']);
-Route::get('/shop', [TrangChuController::class, 'viewShop']);
+Route::get('/shop/{id}', [TrangChuController::class, 'viewShop']);
 
 Route::group(['prefix' => '/', 'middleware' => 'WebClientMiddleware'], function() {
     Route::get('/logout', [CustomController::class, 'logout']);
@@ -45,6 +46,9 @@ Route::group(['prefix' => '/admin', 'middleware' => 'WebAdminMiddleware'], funct
     });
     Route::group(['prefix' => '/loai-hang-hoa'], function () {
         Route::get('/', [LoaiHangHoaController::class, 'viewLoaiHangHoa']);
+    });
+    Route::group(['prefix' => '/ban'], function () {
+        Route::get('/', [BanController::class, 'viewBan']);
     });
     Route::group(['prefix' => '/hang-hoa'], function () {
         Route::get('/', [HangHoaController::class, 'viewHangHoa']);

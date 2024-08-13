@@ -8,25 +8,23 @@
         </div>
         <hr>
         <div class="row">
-            <div class="col-7">
+            <div class="col-8">
                 <div id="grub" class="card">
                     <div class="card-header bg-primary text-center align-middle">
                         <b class="text-light">Danh Sách Đơn Đặt</b>
                     </div>
                     <div class="card-body">
                         <div class="mb-2 d-flex">
-                            <button id="choosePttt" class="btn btn-outline-primary">Chọn Phương Thức Thanh Toán
-                                Thanh Toán</button>
-
-                            <button @click="huyDon()" style="margin-left: 60px" class="btn btn-danger">Hủy Đặt
-                                Đơn</button>
+                            <button id="choosePttt" class="btn btn-outline-primary">Thanh Toán Đơn Hàng</button>
+                            <button @click="huyDon()" id="deleteOrder" class="btn btn-danger">Hủy Đơn Đặt</button>
                         </div>
-                        <div class="table-responsive">
+                        <div id="table-order" class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th class="text-center align-middle">#</th>
                                         <th class="text-center align-middle">Tên Sản Phẩm</th>
+                                        <th class="text-center align-middle">Hình Ảnh</th>
                                         <th class="text-center align-middle">Giá tiền</th>
                                         <th class="text-center align-middle">Số Lượng</th>
                                         <th class="text-center align-middle">Action</th>
@@ -39,6 +37,10 @@
                                             <th v-on:click="deleteItem(v.id_don_dat, k)" class="text-center align-middle"><i
                                                     style="color: red" class="fa-solid fa-calendar-xmark"></i></th>
                                             <td class="text-center align-middle">@{{ v.ten_hang_hoa }}</td>
+                                            <td class="text-center align-middle">
+                                                <img v-bind:src="v.hinh_anh" class="img-thumbnail"
+                                                    style="height: 100px; width: 150px; object-fit: cover">
+                                            </td>
                                             <td class="text-center align-middle">@{{ vnd(v.gia_hang_hoa) }}</td>
                                             <td class="text-center align-middle">@{{ v.so_luong }}</td>
                                             <td class="text-center align-middle">
@@ -119,7 +121,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <div class="card mb-3">
                     <div style="height: 38px" class="card-header bg-primary text-center align-middle">
                         <h6><b>ĐƠN ĐẶT</b></h6>
@@ -173,7 +175,7 @@
                         KHÁCH HÀNG
                     </div>
                     <div class="card-body">
-                        <div class="d-flex">
+                        <div class="d-flex mb-3">
                             <label class="mt-2" for="">Số Điện Thoại: </label>
                             <div autocomplete="off" style="margin-left: 20px">
                                 <div class="autocomplete" style="width:250px">
@@ -182,12 +184,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="infoClient" class="d-none">
-                            <label for="">Tên Khách Hàng: @{{ infoClient.ho_va_ten }}</label>
+                        <div id="infoClient" class="d-none mb-3">
+                            <label class="mb-3" for="">Tên Khách Hàng: @{{ infoClient.ho_va_ten }}</label>
                             <br>
                             <div class="mb-2">
-                                <label for="">Điểm Mua Hàng: </label>
-                                <input v-model="infoClient.score_order" type="text">
+                                <label class="mb-1" for="">Điểm Mua Hàng Hiện Tại: </label>
+                                <input class="form-control" style="width: 200px;" v-model="infoClient.score_order"
+                                    type="text">
                             </div>
                         </div>
                     </div>
@@ -203,6 +206,17 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            var tb = $('#table-order')[0];
+            var btnPttt = $('#choosePttt')[0];
+            var deleteOrder = $('#deleteOrder')[0];
+            var obj_width_tb = tb.offsetWidth;
+            var obj_width_pay = btnPttt.offsetWidth;
+            var obj_width_del = deleteOrder.offsetWidth;
+            console.log(obj_width_tb, obj_width_pay, obj_width_del);
+            var setWidth = (obj_width_tb - obj_width_pay - obj_width_del - 2);
+            console.log(setWidth);
+            deleteOrder.style.marginLeft = setWidth + 'px';
+            console.log(deleteOrder.style.marginLeft);
             $('title')[0].innerText = 'LC - ADMIN Đơn Đặt';
             $('#tienmat').on('click', function(e) {
                 $('#tienmat').addClass('bg-success');
@@ -394,7 +408,7 @@
                             this.totalItems();
                             this.listSDT = res.data.listSDT;
                             for (let i = 0; i < this.listSDT.length; i++) {
-                                this.listSDT[i] = this.listSDT[i]
+                                this.listSDT[i] = this.listSDT[i];
                             }
                         })
                         .then((res) => {
@@ -435,37 +449,37 @@
                     }
                 },
                 createGrub() {
-                    this.listGrub.forEach(element => {
-                        if (element.id == this.chooseId) {
-                            this.isCheckSame = true;
-                            toastr.error('Đã Tạo Đơn Với Hàng Hóa Này!', 'Error');
-                        } else {
-                            this.isCheckSame = false;
-                        }
-                    });
-                    if (this.isCheckSame) {
-                        return;
-                    } else {
-                        var tt = {
-                            'id': this.chooseId,
-                            'so_luong': this.$refs.soluong.value,
-                        }
-                        axios
-                            .post('{{ Route('createLenDon') }}', tt)
-                            .then((res) => {
-                                if (res.data.status) {
-                                    toastr.success(res.data.message, 'Success');
-                                    this.loadData();
-                                } else {
-                                    toastr.error(res.data.message, 'Error');
-                                }
-                            })
-                            .catch((res) => {
-                                $.each(res.response.data.errors, function(k, v) {
-                                    toastr.error(v[0], 'Error');
-                                });
-                            });
+                    // this.listGrub.forEach(element => {
+                    //     if (element.id == this.chooseId) {
+                    //         this.isCheckSame = true;
+                    //         // toastr.error('Đã Tạo Đơn Với Hàng Hóa Này!', 'Error');
+                    //     } else {
+                    //         this.isCheckSame = false;
+                    //     }
+                    // });
+                    // if (this.isCheckSame) {
+                    //     return;
+                    // } else {
+                    var tt = {
+                        'id': this.chooseId,
+                        'so_luong': this.$refs.soluong.value,
                     }
+                    axios
+                        .post('{{ Route('createLenDon') }}', tt)
+                        .then((res) => {
+                            if (res.data.status) {
+                                toastr.success(res.data.message, 'Success');
+                                this.loadData();
+                            } else {
+                                toastr.error(res.data.message, 'Error');
+                            }
+                        })
+                        .catch((res) => {
+                            $.each(res.response.data.errors, function(k, v) {
+                                toastr.error(v[0], 'Error');
+                            });
+                        });
+                    // }
                 },
                 autocomplete(app) {
                     var arr = this.listSDT;
@@ -482,25 +496,31 @@
                         a.setAttribute("id", this.id + "autocomplete-list");
                         a.setAttribute("class", "autocomplete-items");
                         this.parentNode.appendChild(a);
+                        var countItem = 0;
                         for (i = 0; i < arr.length; i++) {
                             var numTell = arr[i].so_dien_thoai;
                             if (numTell.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                                b = document.createElement("DIV");
-                                b.innerHTML = "<strong>" + numTell.substr(0, val.length) + "</strong>";
-                                b.innerHTML += numTell.substr(val.length);
-                                b.innerHTML += "<input id='" + i + "' type='hidden' value='" + numTell +
-                                    "'>";
-                                b.addEventListener("click", function(e) {
-                                    app.numberPhone = this.getElementsByTagName("input")[0].value;
-                                    console.log(this.getElementsByTagName("input")[0].value);
-                                    app.infoClient = arr[this.getElementsByTagName("input")[0].id];
-                                    if (this.infoClient != "") {
-                                        var infoClients = document.getElementById("infoClient");
-                                        infoClients.classList.remove("d-none");
-                                    }
-                                    closeAllLists();
-                                });
-                                a.appendChild(b);
+                                countItem++;
+                                if (countItem <= 5) {
+                                    b = document.createElement("DIV");
+                                    b.innerHTML = "<strong>" + numTell.substr(0, val.length) + "</strong>";
+                                    b.innerHTML += numTell.substr(val.length);
+                                    b.innerHTML += "<input id='" + i + "' type='hidden' value='" + numTell +
+                                        "'>";
+                                    b.addEventListener("click", function(e) {
+                                        app.numberPhone = this.getElementsByTagName("input")[0]
+                                            .value;
+                                        console.log(this.getElementsByTagName("input")[0].value);
+                                        app.infoClient = arr[this.getElementsByTagName("input")[0]
+                                            .id];
+                                        if (this.infoClient != "") {
+                                            var infoClients = document.getElementById("infoClient");
+                                            infoClients.classList.remove("d-none");
+                                        }
+                                        closeAllLists();
+                                    });
+                                    a.appendChild(b);
+                                }
                             }
                         }
                     });

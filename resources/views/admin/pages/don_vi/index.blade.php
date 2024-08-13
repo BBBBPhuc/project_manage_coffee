@@ -158,7 +158,6 @@
                         .post('http://127.0.0.1:8000/api/admin/don-vi/data')
                         .then((res) => {
                             this.listData = res.data.data;
-                            this.count = res.data.count;
                         })
                         .catch((res) => {
                             $.each(res.response.data.errors, function(k, v) {

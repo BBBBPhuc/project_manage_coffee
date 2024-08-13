@@ -80,9 +80,11 @@ Route::group(['prefix' => '/admin'], function () {
 
     //Bàn
     Route::group(['prefix' => 'ban'], function () {
-        Route::post('/data', [APIBanController::class, 'layData']);
+        Route::post('/data', [APIBanController::class, 'layData'])->name('dataBan');
         Route::post('/update', [APIBanController::class, 'update']);
         Route::post('/delete', [APIBanController::class, 'destroy']);
+        Route::post('/create', [APIBanController::class, 'create'])->name('createBan');
+
     });
 
     //Nhân viên
